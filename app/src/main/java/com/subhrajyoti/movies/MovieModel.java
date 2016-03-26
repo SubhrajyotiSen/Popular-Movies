@@ -5,25 +5,25 @@ import java.io.Serializable;
 
 public class MovieModel implements Serializable {
 
-    public String getTitle() {
-        return title;
+    public String getoriginal_title() {
+        return original_title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setoriginal_title(String original_title) {
+        this.original_title = original_title;
     }
 
-    private String title;
+    private String original_title;
 
-    public String getImgURL() {
-        return imgURL;
+    public String getposter_path() {
+        return poster_path;
     }
 
-    public void setImgURL(String imgURL) {
-        this.imgURL = imgURL;
+    public void setposter_path(String poster_path) {
+        this.poster_path = poster_path;
     }
 
-    private String imgURL;
+    private String poster_path;
 
     public String getOverview() {
         return overview;
@@ -35,27 +35,34 @@ public class MovieModel implements Serializable {
 
     private String overview;
 
-    public String getRating() {
-        return rating;
+    public String getvote_average() {
+        return vote_average;
     }
 
-    public void setRating(String rating) {
-        this.rating = rating;
+    public void setvote_average(String vote_average) {
+        this.vote_average = vote_average;
     }
 
-    private String rating;
+    private String vote_average;
 
-    public String getReleaseDate() {
-        return releaseDate;
+    public String getrelease_date() {
+        return release_date;
     }
 
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
+    public void setrelease_date(String release_date) {
+        this.release_date = release_date;
     }
 
-    private String releaseDate;
+    private String release_date;
 
-    public MovieModel(){
+    public MovieModel(String original_title,String poster_path,String overview, String vote_average,String release_date){
+
+        this.original_title=original_title;
+        this.poster_path=poster_path;
+        this.overview=overview;
+        this.vote_average=vote_average;
+        this.release_date=release_date;
+
 
     }
 

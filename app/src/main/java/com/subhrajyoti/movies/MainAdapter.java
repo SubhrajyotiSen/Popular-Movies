@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -14,40 +15,53 @@ import java.util.ArrayList;
 
 public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public static class MainViewHolder extends RecyclerView.ViewHolder {
-
-        ImageView imageView;
-
-        MainViewHolder(View itemView) {
-            super(itemView);
-
-            imageView = (ImageView) itemView.findViewById(R.id.listImage);
-
-        }
-    }
-    ArrayList<MovieModel> arrayList;
     Context context;
+    ArrayList<MovieModel> data = new ArrayList<>();
+    String API_KEY;
 
-    public MainAdapter(Context context,ArrayList<MovieModel> arrayList){
-        this.context=context;
-        this.arrayList=arrayList;
+    public MainAdapter(Context context, ArrayList<MovieModel> data,String API_KEY) {
+        this.context = context;
+        this.data = data;
+        this.API_KEY = API_KEY;
     }
 
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
-        return null;
+        RecyclerView.ViewHolder viewHolder;
+        View v;
+        v = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.list_item, parent, false);
+        viewHolder = new MyItemHolder(v);
+
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Picasso.with(context).load(arrayList.get(position).getImgURL()).centerCrop().placeholder(R.drawable.placeholder).into(((MainViewHolder)holder).imageView);
+
+        Picasso.with(context).load("http://image.tmdb.org/t/p/w500" + data.get(position).getposter_path() + "?api_key?=" + API_KEY).placeholder(R.drawable.placeholder).into(((MyItemHolder) holder).imageView);
+
+
 
     }
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return data.size();
     }
+
+    public static class MyItemHolder extends RecyclerView.ViewHolder {
+        ImageView imageView;
+
+
+        public MyItemHolder(View itemView) {
+            super(itemView);
+
+            imageView = (ImageView) itemView.findViewById(R.id.listImage);
+        }
+
+    }
+
+
 }
