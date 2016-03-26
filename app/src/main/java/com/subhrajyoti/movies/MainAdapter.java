@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -40,9 +39,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        Picasso.with(context).load("http://image.tmdb.org/t/p/w500" + data.get(position).getposter_path() + "?api_key?=" + API_KEY).placeholder(R.drawable.placeholder).into(((MyItemHolder) holder).imageView);
-
-
+        Picasso.with(context).load("http://image.tmdb.org/t/p/w342" + data.get(position).getposter_path() + "?api_key?=" + API_KEY).placeholder(R.drawable.placeholder).into(((MyItemHolder) holder).imageView);
 
     }
 

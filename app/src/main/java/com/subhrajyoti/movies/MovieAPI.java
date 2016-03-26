@@ -12,5 +12,8 @@ public interface MovieAPI {
 
 
     @GET("/3/movie/popular")
-    Call<Movies> loadMovies(@Query("api_key") String api_key);
+    Call<Movies> loadPopularMovies(@Query("api_key") String api_key);
+
+    @GET("/3/movie/top_rated")
+    Call<Movies> loadratedMovies(@Query("api_key") String api_key);
 }

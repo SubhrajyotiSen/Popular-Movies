@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Movies</string>
     <string name="action_settings">Settings</string>
+    <string name="sort_option_popularity">Popularity</string>
+    <string name="sort_option_rated">Highest rated</string>
+    <string name="sort_menu">Sort By</string>
 </resources>
