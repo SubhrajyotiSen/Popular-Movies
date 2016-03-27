@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity implements Callback<Movies> 
     GridLayoutManager portrait;
     GridLayoutManager landscape;
     boolean popular;
-    String API_Key = "954a72d39f9d0a7f59b3c738fa9d6e7f";
-    final String ROOT_URL = "";
+    String API_Key = "";
+    final String ROOT_URL = "http://api.themoviedb.org";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
