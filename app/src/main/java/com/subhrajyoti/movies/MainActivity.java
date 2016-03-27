@@ -2,7 +2,6 @@ package com.subhrajyoti.movies;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,7 +11,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -36,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Movies> 
     GridLayoutManager landscape;
     boolean popular;
     String API_Key = "954a72d39f9d0a7f59b3c738fa9d6e7f";
-    final String ROOT_URL = "http://api.themoviedb.org";
+    final String ROOT_URL = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
