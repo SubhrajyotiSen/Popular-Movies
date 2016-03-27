@@ -44,6 +44,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         MovieModel movieModel =  getIntent().getParcelableExtra("MovieModel");
         collapsingToolbarLayout.setTitle(" ");
+        textView.setText(movieModel.getoriginal_title());
         Picasso.with(getApplicationContext()).load(BuildConfig.IMAGE_URL+"/w500" + movieModel.getBackdrop_path() + "?api_key?=" + BuildConfig.API_KEY).placeholder(R.drawable.placeholder).into(toolImage);
 
         Picasso.with(getApplicationContext()).load(BuildConfig.IMAGE_URL+"/w342" + movieModel.getposter_path() + "?api_key?=" + BuildConfig.API_KEY).placeholder(R.drawable.placeholder).into(imageView);
