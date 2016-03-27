@@ -1,5 +1,7 @@
 package com.subhrajyoti.movies;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -11,8 +13,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -20,9 +25,13 @@ import butterknife.ButterKnife;
 public class DetailsActivity extends AppCompatActivity {
 
     @Bind(R.id.toolImage)
-    ImageView imageView;
+    ImageView toolImage;
     @Bind(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
+    @Bind(R.id.imageView)
+    ImageView imageView;
+    @Bind(R.id.textView)
+    TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,9 +42,11 @@ public class DetailsActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        MovieModel movieModel = (MovieModel) getIntent().getSerializableExtra("MovieModel");
-        collapsingToolbarLayout.setTitle(movieModel.getoriginal_title());
-        Picasso.with(getApplicationContext()).load(BuildConfig.IMAGE_URL+"/w500" + movieModel.getBackdrop_path() + "?api_key?=" + BuildConfig.API_KEY).placeholder(R.drawable.placeholder).into(imageView);
+        MovieModel movieModel =  getIntent().getParcelableExtra("MovieModel");
+        collapsingToolbarLayout.setTitle(" ");
+        Picasso.with(getApplicationContext()).load(BuildConfig.IMAGE_URL+"/w500" + movieModel.getBackdrop_path() + "?api_key?=" + BuildConfig.API_KEY).placeholder(R.drawable.placeholder).into(toolImage);
+
+        Picasso.with(getApplicationContext()).load(BuildConfig.IMAGE_URL+"/w342" + movieModel.getposter_path() + "?api_key?=" + BuildConfig.API_KEY).placeholder(R.drawable.placeholder).into(imageView);
 
 
     }
@@ -49,6 +60,7 @@ public class DetailsActivity extends AppCompatActivity {
         switch (id){
 
             case android.R.id.home:
+                supportFinishAfterTransition();
                 super.onBackPressed();
                 break;
         }

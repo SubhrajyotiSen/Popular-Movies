@@ -2,7 +2,11 @@ package com.subhrajyoti.movies;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +18,7 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import butterknife.Bind;

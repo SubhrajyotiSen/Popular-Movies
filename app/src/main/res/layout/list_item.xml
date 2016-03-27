@@ -6,4 +6,5 @@
     android:id="@+id/listImage"
     android:scaleType="fitStart"
     android:adjustViewBounds="true"
+
     />

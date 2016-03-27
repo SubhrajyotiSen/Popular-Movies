@@ -5,4 +5,7 @@
     <string name="sort_option_rated">Highest rated</string>
     <string name="sort_menu">Sort By</string>
     <string name="title_activity_details">DetailsActivity</string>
+    <string name="title_movie_list">Movies</string>
+    <string name="title_movie_detail">Movie Detail</string>
+    <string name="transition_string">transition</string>
 </resources>
