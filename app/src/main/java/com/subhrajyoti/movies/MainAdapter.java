@@ -16,12 +16,11 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context context;
     ArrayList<MovieModel> data = new ArrayList<>();
-    String API_KEY;
 
-    public MainAdapter(Context context, ArrayList<MovieModel> data,String API_KEY) {
+
+    public MainAdapter(Context context, ArrayList<MovieModel> data) {
         this.context = context;
         this.data = data;
-        this.API_KEY = API_KEY;
     }
 
 
@@ -39,7 +38,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        Picasso.with(context).load("http://image.tmdb.org/t/p/w342" + data.get(position).getposter_path() + "?api_key?=" + API_KEY).placeholder(R.drawable.placeholder).into(((MyItemHolder) holder).imageView);
+        Picasso.with(context).load(BuildConfig.IMAGE_URL+"/w342" + data.get(position).getposter_path() + "?api_key?=" + BuildConfig.API_KEY).placeholder(R.drawable.placeholder).into(((MyItemHolder) holder).imageView);
 
     }
 

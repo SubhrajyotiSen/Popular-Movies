@@ -12,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -32,9 +34,8 @@ public class MainActivity extends AppCompatActivity implements Callback<Movies> 
     ArrayList<MovieModel> ratedList;
     GridLayoutManager portrait;
     GridLayoutManager landscape;
+    MaterialDialog dialog;
     boolean popular;
-    String API_Key = "";
-    final String ROOT_URL = "http://api.themoviedb.org";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,17 +53,28 @@ public class MainActivity extends AppCompatActivity implements Callback<Movies> 
             recyclerView.setLayoutManager(portrait);
         else
             recyclerView.setLayoutManager(landscape);
-        mainAdapter = new MainAdapter(this,popularList,API_Key);
-        secondAdapter = new MainAdapter(this,ratedList,API_Key);
+        mainAdapter = new MainAdapter(this,popularList);
+        secondAdapter = new MainAdapter(this,ratedList);
         recyclerView.setAdapter(mainAdapter);
         Log.v("Test", "Adapter");
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
+                .content("Loading Data").progress(true, 0);
+
+
+        dialog = builder.build();
+        dialog.show();
         getMovies();
 
         recyclerView.addOnItemTouchListener(new RecyclerClickListener(this, new RecyclerClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
-                MovieModel movieModel = popularList.get(position);
+                MovieModel movieModel;
+                if (!popular){
+                    movieModel = popularList.get(position);
+                }
+                else {
+                    movieModel = ratedList.get(position);
+                }
                 Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
                 intent.putExtra("MovieModel", movieModel);
                 startActivity(intent);
@@ -75,14 +87,14 @@ public class MainActivity extends AppCompatActivity implements Callback<Movies> 
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ROOT_URL)
+                .baseUrl(BuildConfig.ROOT_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         MovieAPI movieAPI = retrofit.create(MovieAPI.class);
 
-        Call<Movies> call = movieAPI.loadPopularMovies(API_Key);
-        Call<Movies> call2 = movieAPI.loadratedMovies(API_Key);
+        Call<Movies> call = movieAPI.loadPopularMovies(BuildConfig.API_KEY);
+        Call<Movies> call2 = movieAPI.loadratedMovies(BuildConfig.API_KEY);
         if (popular)
             call.enqueue(this);
         else
@@ -110,11 +122,14 @@ public class MainActivity extends AppCompatActivity implements Callback<Movies> 
                 item.setChecked(true);
                 //getMovies();
                 recyclerView.setAdapter(secondAdapter);
+                popular=true;
                 break;
             case R.id.action_sort_by_popularity:
                 item.setChecked(true);
                 recyclerView.setAdapter(mainAdapter);
+                popular=false;
                 break;
+
         }
 
 
@@ -141,11 +156,12 @@ public class MainActivity extends AppCompatActivity implements Callback<Movies> 
             }
         mainAdapter.notifyDataSetChanged();
         secondAdapter.notifyDataSetChanged();
+        dialog.dismiss();
     }
 
     @Override
     public void onFailure(Throwable t) {
-        Log.v("fail", t.getLocalizedMessage());
+        t.printStackTrace();
 
     }
     @Override

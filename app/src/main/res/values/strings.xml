@@ -4,4 +4,5 @@
     <string name="sort_option_popularity">Popularity</string>
     <string name="sort_option_rated">Highest rated</string>
     <string name="sort_menu">Sort By</string>
+    <string name="title_activity_details">DetailsActivity</string>
 </resources>
