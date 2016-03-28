@@ -29,7 +29,7 @@ import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class MainActivity extends AppCompatActivity implements Callback<Movies> {
+public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -61,14 +61,9 @@ public class MainActivity extends AppCompatActivity implements Callback<Movies> 
         mainAdapter = new MainAdapter(this,popularList);
         secondAdapter = new MainAdapter(this,ratedList);
         recyclerView.setAdapter(mainAdapter);
-        Log.v("Test", "Adapter");
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
-                .content("Loading Data").progress(true, 0);
-
-
-        dialog = builder.build();
-        dialog.show();
-        getMovies();
+        displayDialog();
+        getMovies("popular");
+        getMovies("top_rated");
 
         recyclerView.addOnItemTouchListener(new RecyclerClickListener(this, new RecyclerClickListener.OnItemClickListener() {
             @Override
@@ -88,8 +83,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Movies> 
         }));
     }
 
-    private void getMovies(){
-
+    private void getMovies(final String sort){
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BuildConfig.ROOT_URL)
@@ -98,16 +92,38 @@ public class MainActivity extends AppCompatActivity implements Callback<Movies> 
 
         MovieAPI movieAPI = retrofit.create(MovieAPI.class);
 
-        Call<Movies> call = movieAPI.loadPopularMovies(BuildConfig.API_KEY);
-        Call<Movies> call2 = movieAPI.loadratedMovies(BuildConfig.API_KEY);
-        if (popular)
-            call.enqueue(this);
-        else
-            call2.enqueue(this);
+        Call<Movies> call = movieAPI.loadMovies(sort,BuildConfig.API_KEY);
 
 
+        call.enqueue(new Callback<Movies>() {
+            @Override
+            public void onResponse(Response<Movies> response, Retrofit retrofit) {
+                if (sort.equals("popular")) {
+                    for (int i = 0; i < response.body().results.size(); i++) {
+                        popularList.add(response.body().results.get(i));
+                        Log.v(sort, response.body().results.get(i).getoriginal_title());
+                    }
+                    mainAdapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                }
+                else {
+                    for (int i = 0; i < response.body().results.size(); i++) {
+                        ratedList.add(response.body().results.get(i));
+                        Log.v(sort, response.body().results.get(i).getoriginal_title());
+                    }
+                    secondAdapter.notifyDataSetChanged();
+                }
 
-    }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+        }
+    });
+
+
+}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -141,34 +157,8 @@ public class MainActivity extends AppCompatActivity implements Callback<Movies> 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onResponse(Response<Movies> moviesResponse, Retrofit retrofit) {
 
-        if (popular) {
 
-            for (int i = 0; i < moviesResponse.body().results.size(); i++) {
-                popularList.add(moviesResponse.body().results.get(i));
-                Log.v("popular", moviesResponse.body().results.get(i).getoriginal_title());
-            }
-            popular=false;
-            getMovies();
-        }
-        else
-            for (int i=0;i<moviesResponse.body().results.size();i++)
-            {
-                ratedList.add(moviesResponse.body().results.get(i));
-                Log.v("rated", moviesResponse.body().results.get(i).getoriginal_title());
-            }
-        mainAdapter.notifyDataSetChanged();
-        secondAdapter.notifyDataSetChanged();
-        dialog.dismiss();
-    }
-
-    @Override
-    public void onFailure(Throwable t) {
-        t.printStackTrace();
-
-    }
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -178,5 +168,13 @@ public class MainActivity extends AppCompatActivity implements Callback<Movies> 
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.setLayoutManager(portrait);
         }
+    }
+
+    public void displayDialog(){
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
+                .content("Fetching Movies").progress(true, 0);
+
+        dialog = builder.build();
+        dialog.show();
     }
 }
