@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getMovies(final String sort){
 
-        Retrofit retrofit = new Retrofit.Builder()
+        /*Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BuildConfig.ROOT_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -120,7 +120,35 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Throwable t) {
 
         }
-    });
+
+    });*/
+        App.getMovieClient().getMovieAPI().loadMovies(sort,BuildConfig.API_KEY).enqueue(new Callback<Movies>() {
+
+            @Override
+            public void onResponse(Response<Movies> response, Retrofit retrofit) {
+                if (sort.equals("popular")) {
+                    for (int i = 0; i < response.body().results.size(); i++) {
+                        popularList.add(response.body().results.get(i));
+                        Log.v(sort, response.body().results.get(i).getoriginal_title());
+                    }
+                    mainAdapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                }
+                else {
+                    for (int i = 0; i < response.body().results.size(); i++) {
+                        ratedList.add(response.body().results.get(i));
+                        Log.v(sort, response.body().results.get(i).getoriginal_title());
+                    }
+                    secondAdapter.notifyDataSetChanged();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
 
 
 }
