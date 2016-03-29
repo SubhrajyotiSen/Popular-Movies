@@ -2,11 +2,7 @@ package com.subhrajyoti.movies;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,14 +14,11 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit.Call;
 import retrofit.Callback;
-import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
@@ -51,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         popularList = new ArrayList<>();
         ratedList = new ArrayList<>();
-        popular=true;
+        popular=false;
         portrait = new GridLayoutManager(this,2);
         landscape = new GridLayoutManager(this,3);
         if (getResources().getConfiguration().orientation== Configuration.ORIENTATION_PORTRAIT)
@@ -64,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         displayDialog();
         getMovies("popular");
         getMovies("top_rated");
+
 
         recyclerView.addOnItemTouchListener(new RecyclerClickListener(this, new RecyclerClickListener.OnItemClickListener() {
             @Override
@@ -85,43 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getMovies(final String sort){
 
-        /*Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BuildConfig.ROOT_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        MovieAPI movieAPI = retrofit.create(MovieAPI.class);
-
-        Call<Movies> call = movieAPI.loadMovies(sort,BuildConfig.API_KEY);
-
-
-        call.enqueue(new Callback<Movies>() {
-            @Override
-            public void onResponse(Response<Movies> response, Retrofit retrofit) {
-                if (sort.equals("popular")) {
-                    for (int i = 0; i < response.body().results.size(); i++) {
-                        popularList.add(response.body().results.get(i));
-                        Log.v(sort, response.body().results.get(i).getoriginal_title());
-                    }
-                    mainAdapter.notifyDataSetChanged();
-                    dialog.dismiss();
-                }
-                else {
-                    for (int i = 0; i < response.body().results.size(); i++) {
-                        ratedList.add(response.body().results.get(i));
-                        Log.v(sort, response.body().results.get(i).getoriginal_title());
-                    }
-                    secondAdapter.notifyDataSetChanged();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-        }
-
-    });*/
         App.getMovieClient().getMovieAPI().loadMovies(sort,BuildConfig.API_KEY).enqueue(new Callback<Movies>() {
 
             @Override
@@ -150,8 +108,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-}
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -168,19 +125,16 @@ public class MainActivity extends AppCompatActivity {
 
         switch (id){
             case R.id.action_sort_by_rating:
-                item.setChecked(true);
-                //getMovies();
                 recyclerView.setAdapter(secondAdapter);
                 popular=true;
                 break;
             case R.id.action_sort_by_popularity:
-                item.setChecked(true);
                 recyclerView.setAdapter(mainAdapter);
                 popular=false;
                 break;
 
         }
-
+        item.setChecked(true);
 
         return super.onOptionsItemSelected(item);
     }

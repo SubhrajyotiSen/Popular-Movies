@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -30,8 +31,16 @@ public class DetailsActivity extends AppCompatActivity {
     CollapsingToolbarLayout collapsingToolbarLayout;
     @Bind(R.id.imageView)
     ImageView imageView;
-    @Bind(R.id.textView)
-    TextView textView;
+    @Bind(R.id.titleView)
+    TextView titleView;
+    @Bind(R.id.rating)
+    TextView rating;
+    @Bind(R.id.ratingBar)
+    RatingBar ratingBar;
+    @Bind(R.id.overview)
+    TextView overview;
+    @Bind(R.id.releaseText)
+    TextView releaseText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +54,17 @@ public class DetailsActivity extends AppCompatActivity {
 
         MovieModel movieModel =  getIntent().getParcelableExtra("MovieModel");
         collapsingToolbarLayout.setTitle(" ");
-        textView.setText(movieModel.getoriginal_title());
+        titleView.setText(movieModel.getoriginal_title());
         Picasso.with(getApplicationContext()).load(BuildConfig.IMAGE_URL+"/w500" + movieModel.getBackdrop_path() + "?api_key?=" + BuildConfig.API_KEY).placeholder(R.drawable.placeholder).into(toolImage);
 
         Picasso.with(getApplicationContext()).load(BuildConfig.IMAGE_URL+"/w342" + movieModel.getposter_path() + "?api_key?=" + BuildConfig.API_KEY).placeholder(R.drawable.placeholder).into(imageView);
+
+        rating.setText(Float.toString(movieModel.getvote_average()).concat("/10"));
+        ratingBar.setMax(5);
+        ratingBar.setRating(movieModel.getvote_average() / 2f);
+
+        overview.setText(movieModel.getOverview());
+        releaseText.setText("Realease Date: ".concat(movieModel.getrelease_date()));
 
 
     }
