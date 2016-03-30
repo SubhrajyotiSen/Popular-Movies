@@ -55,9 +55,9 @@ public class DetailsActivity extends AppCompatActivity {
         MovieModel movieModel =  getIntent().getParcelableExtra("MovieModel");
         collapsingToolbarLayout.setTitle(" ");
         titleView.setText(movieModel.getoriginal_title());
-        Picasso.with(getApplicationContext()).load(BuildConfig.IMAGE_URL+"/w500" + movieModel.getBackdrop_path() + "?api_key?=" + BuildConfig.API_KEY).placeholder(R.drawable.placeholder).into(toolImage);
+        Picasso.with(getApplicationContext()).load(BuildConfig.IMAGE_URL+"/w500" + movieModel.getBackdrop_path() + "?api_key?=" + BuildConfig.API_KEY).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(toolImage);
 
-        Picasso.with(getApplicationContext()).load(BuildConfig.IMAGE_URL+"/w342" + movieModel.getposter_path() + "?api_key?=" + BuildConfig.API_KEY).placeholder(R.drawable.placeholder).into(imageView);
+        Picasso.with(getApplicationContext()).load(BuildConfig.IMAGE_URL+"/w342" + movieModel.getposter_path() + "?api_key?=" + BuildConfig.API_KEY).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(imageView);
 
         rating.setText(Float.toString(movieModel.getvote_average()).concat("/10"));
         ratingBar.setMax(5);
