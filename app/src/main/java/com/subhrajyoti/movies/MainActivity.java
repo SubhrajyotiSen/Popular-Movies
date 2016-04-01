@@ -30,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
     MainAdapter secondAdapter;
     ArrayList<MovieModel> popularList;
     ArrayList<MovieModel> ratedList;
-    GridLayoutManager portrait;
-    GridLayoutManager landscape;
+    GridLayoutManager gridLayoutManager;
     MaterialDialog dialog;
     boolean popular;
 
@@ -45,12 +44,12 @@ public class MainActivity extends AppCompatActivity {
         popularList = new ArrayList<>();
         ratedList = new ArrayList<>();
         popular=false;
-        portrait = new GridLayoutManager(this,2);
-        landscape = new GridLayoutManager(this,3);
+        gridLayoutManager = new GridLayoutManager(this,2);
+
         if (getResources().getConfiguration().orientation== Configuration.ORIENTATION_PORTRAIT)
-            recyclerView.setLayoutManager(portrait);
+            gridLayoutManager.setSpanCount(2);
         else
-            recyclerView.setLayoutManager(landscape);
+            gridLayoutManager.setSpanCount(3);
         mainAdapter = new MainAdapter(this,popularList);
         secondAdapter = new MainAdapter(this,ratedList);
         recyclerView.setAdapter(mainAdapter);
@@ -146,9 +145,10 @@ public class MainActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
 
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            recyclerView.setLayoutManager(landscape);
+           gridLayoutManager.setSpanCount(3);
+
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recyclerView.setLayoutManager(portrait);
+            gridLayoutManager.setSpanCount(2);
         }
     }
 
