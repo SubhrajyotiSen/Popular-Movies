@@ -60,8 +60,4 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     }
 
-
-
-
-
 }

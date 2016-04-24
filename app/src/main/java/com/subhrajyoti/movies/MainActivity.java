@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         mainAdapter = new MainAdapter(this,popularList);
         secondAdapter = new MainAdapter(this,ratedList);
         recyclerView.setAdapter(mainAdapter);
+        recyclerView.setLayoutManager(gridLayoutManager);
         displayDialog();
         getMovies("popular");
         getMovies("top_rated");
@@ -79,10 +80,10 @@ public class MainActivity extends AppCompatActivity {
     private void getMovies(final String sort){
 
 
-        App.getMovieClient().getMovieAPI().loadMovies(sort,BuildConfig.API_KEY).enqueue(new Callback<Movies>() {
+        App.getMovieClient().getMovieAPI().loadMovies(sort,BuildConfig.API_KEY).enqueue(new Callback<MovieAPI.Movies>() {
 
             @Override
-            public void onResponse(Response<Movies> response, Retrofit retrofit) {
+            public void onResponse(Response<MovieAPI.Movies> response, Retrofit retrofit) {
                 if (sort.equals("popular")) {
                     for (int i = 0; i < response.body().results.size(); i++) {
                         popularList.add(response.body().results.get(i));

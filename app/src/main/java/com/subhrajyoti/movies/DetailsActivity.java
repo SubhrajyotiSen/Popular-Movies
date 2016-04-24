@@ -64,7 +64,7 @@ public class DetailsActivity extends AppCompatActivity {
         ratingBar.setRating(movieModel.getvote_average() / 2f);
 
         overview.setText(movieModel.getOverview());
-        releaseText.setText("Realease Date: ".concat(movieModel.getrelease_date()));
+        releaseText.setText("Release Date: ".concat(movieModel.getrelease_date()));
 
 
     }
